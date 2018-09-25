@@ -14,37 +14,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.automodes.ExampleAuto;
 import frc.subsystems.ExampleSubsystem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Simple robot class
  */
 
-public class SimpleRobot extends IterativeRobot {
+public class Robot extends IterativeRobot {
 
     Joystick gamepad;
   
-    WPI_TalonSRX[] talonArray = new WPI_TalonSRX[6];
+    List<WPI_TalonSRX> talonArray = new ArrayList<WPI_TalonSRX>();
     WPI_TalonSRX rollerLeft;
     WPI_TalonSRX rollerRight;
     WPI_TalonSRX driveBackLeft;
     WPI_TalonSRX driveBackRight;
     WPI_TalonSRX driveFrontLeft;
     WPI_TalonSRX driveFrontRight;
+    WPI_TalonSRX talonLoader;
 
-    ExampleSubsystem subsystemRollerLeft;
-    ExampleSubsystem subsystemRollerRight;
-    ExampleSubsystem subsystemDriveBackLeft;
-    ExampleSubsystem subsystemDriveBackRight;
-    ExampleSubsystem subsystemDriveFrontLeft;
-    ExampleSubsystem subsystemDriveFrontRight;
-
-	SendableChooser<Command> autoChooser;
+    ExampleSubsystem drivetrain;
 
   /**
    * Constructor for Example Robot
    * 
    * <p>Initializes the subsystems, talons and gamepad</p>
    */
-	public SimpleRobot() {
+	public Robot() {
 		
 		gamepad = new Joystick(0);
 	
@@ -54,14 +51,8 @@ public class SimpleRobot extends IterativeRobot {
         driveBackRight = new WPI_TalonSRX(3);
         driveFrontLeft = new WPI_TalonSRX(2);
         driveFrontRight = new WPI_TalonSRX(1);
-    
-        subsystemRollerLeft = new ExampleSubsystem(rollerLeft);
-        subsystemRollerRight = new ExampleSubsystem(rollerRight);
-        subsystemDriveBackLeft = new ExampleSubsystem(driveBackLeft);
-        subsystemDriveBackRight = new ExampleSubsystem(driveBackRight);
-        subsystemDriveFrontLeft = new ExampleSubsystem(driveFrontLeft);
-        subsystemDriveFrontRight = new ExampleSubsystem(driveFrontRight);
-		
+        talonLoader = new WPI_TalonSRX(6);
+        
 	}
 
   /**
@@ -69,15 +60,6 @@ public class SimpleRobot extends IterativeRobot {
    */
 	@Override
 	public void robotInit() {
-		
-		autoChooser = new SendableChooser<Command>();
-        autoChooser.addObject("Roller Left Subsystem", new ExampleAuto(subsystemRollerLeft));
-        autoChooser.addObject("Roller Right Subsystem", new ExampleAuto(subsystemRollerRight));
-        autoChooser.addObject("Back Left Drive", new ExampleAuto(subsystemDriveBackLeft));
-        autoChooser.addObject("Back Right Drive", new ExampleAuto(subsystemDriveBackRight));
-        autoChooser.addObject("Front Left Drive", new ExampleAuto(subsystemDriveFrontLeft));
-        autoChooser.addObject("Front Right Drive", new ExampleAuto(subsystemDriveFrontRight));
-		SmartDashboard.putData("Select Autonomous Mode", autoChooser);
 		
 	}
 
@@ -124,8 +106,6 @@ public class SimpleRobot extends IterativeRobot {
    * Adds the example auto mode to Scheduler
    */
 	public void autonomousInit() {
-
-	    Scheduler.getInstance().add(new ExampleAuto(subsystemRollerLeft));
 
 	}
 
